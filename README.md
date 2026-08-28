@@ -10,7 +10,7 @@ That is the spirit of this project. Start close to the game, make the useful thi
 
 ## The logo
 
-The logo is called **La Pelota de Medias**. It should feel like a hand-rolled football: layered, imperfect, energetic, and unmistakably made for play. It is not a polished tournament ball; it is the ball you make when the only thing you need is a match.
+The logo is called **Pelota de Medias**. It should feel like a hand-rolled football: layered, imperfect, energetic, and unmistakably made for play. It is not a polished tournament ball; it is the ball you make when the only thing you need is a match.
 
 ## Current direction
 

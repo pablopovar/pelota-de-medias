@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pelota de Medias — Feed prototype</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Pelota de Medias home"><span class="ball-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Pelota de Medias</span></a>
+      <button class="menu-button" id="menu-button" aria-expanded="false" aria-controls="menu-panel"><span></span><span></span><span></span><span class="sr-only">Menu</span></button>
+      <nav class="menu-panel" id="menu-panel" hidden aria-label="Menu"><a href="#top">Home feed</a><a href="#feed">Match archive</a><a href="#about">About Pelota de Medias</a></nav>
+    </header>
+    <main id="top">
+      <section class="controls" aria-label="Feed controls">
+        <div class="control-group"><span class="control-label">Sort</span><button class="select-button" id="sort-button">Newest first <span>⌄</span></button></div>
+        <div class="control-group type-controls"><span class="control-label">Show</span><button class="filter active" data-type="match" aria-pressed="true"><span class="type-dot match"></span>Matches</button><button class="filter active" data-type="news" aria-pressed="true"><span class="type-dot news"></span>News</button><button class="filter active" data-type="event" aria-pressed="true"><span class="type-dot event"></span>Events</button></div>
+        <div class="control-group compact-control"><span class="control-label">Density</span><button class="density active" data-density="compact">Compact</button><button class="density" data-density="comfortable">Roomy</button></div>
+      </section>
+      <section id="feed" class="feed" aria-labelledby="feed-title"><div class="feed-meta"><h2 id="feed-title">The feed</h2><p id="feed-count"></p></div><div id="feed-list" class="feed-list" aria-live="polite"></div><button class="older-button" id="older-button">Show older entries</button></section>
+      <section id="about" class="about"><p class="eyebrow">Experience principle</p><h2>A fan’s timeline, not a database dump.</h2><p>The home page is a living, chronological record. A match result, a squad announcement, a debut, a call-up, a milestone: all are short, legible entries. Controls let the fan keep only what matters in view.</p></section>
+    </main>
+    <footer>Pelota de Medias · feed experience prototype</footer>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+const entries=[
+ {date:'2026-08-28',time:'20:45',type:'match',title:'Argentina 2–1 Chile',state:'Finished',detail:'World Cup qualifying · Monumental, Buenos Aires',score:'2 – 1',target:'game.html'},
+ {date:'2026-08-28',time:'20:39',type:'news',title:'Full-time notes: Argentina keep control late',state:'Read',detail:'A short match story: Argentina found the decisive goal after a controlled second half.',target:'news.html'},
+ {date:'2026-08-28',time:'19:56',type:'event',title:'Lautaro Martínez scores his 32nd international goal',state:'Milestone',detail:'A player milestone, permanently connected to the match where it happened.',target:'event.html'},
+ {date:'2026-08-28',time:'19:14',type:'event',title:'Substitution: Paredes replaces De Paul',state:'Match event',detail:'Timeline event · Argentina vs Chile',target:'event.html'},
+ {date:'2026-08-28',time:'18:48',type:'news',title:'Half-time: Argentina lead 1–0',state:'Read',detail:'A concise, time-stamped update.',target:'news.html'},
+ {date:'2026-08-27',time:'16:00',type:'news',title:'Starting XI announced for Argentina vs Chile',state:'Read',detail:'Lineups and formation become part of the match record.',target:'news.html'},
+ {date:'2026-08-26',time:'11:30',type:'event',title:'Squad update: one change before the qualifier',state:'Team news',detail:'A durable event that a fan can find later.',target:'event.html'},
+ {date:'2026-08-14',time:'22:06',type:'match',title:'Argentina 2–0 Mexico',state:'Finished',detail:'International friendly · Atlanta, United States',score:'2 – 0',target:'game.html'},
+ {date:'2026-08-14',time:'22:02',type:'event',title:'Clean sheet: 25 minutes without a shot on target',state:'Match event',detail:'A statistical moment associated with the match.',target:'event.html'},
+ {date:'2026-07-19',time:'23:11',type:'match',title:'Uruguay 1–1 Argentina',state:'Finished',detail:'World Cup qualifying · Centenario, Montevideo',score:'1 – 1',target:'game.html'},
+ {date:'2026-07-06',time:'21:54',type:'match',title:'Argentina 3–0 Peru',state:'Finished',detail:'Copa del Sur · Monumental, Buenos Aires',score:'3 – 0',target:'game.html'}
+];
+let enabled=new Set(['match','news','event']),newest=true,visibleCount=7,selected=null;
+const icons={match:'⚽',news:'↗',event:'✦'},labels={match:'Match',news:'News',event:'Event'},el=id=>document.getElementById(id);
+function prettyDate(date){return new Date(`${date}T12:00:00`).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).replace(', 2026','')}
+function ordered(){return entries.filter(x=>enabled.has(x.type)).sort((a,b)=>newest?`${b.date}${b.time}`.localeCompare(`${a.date}${a.time}`):`${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`))}
+function preview(entry){const destination={match:'game',news:'news',event:'event'}[entry.type];return `<div class="feed-preview ${selected===entry?'open':''}"><p>${entry.score?`Final score <strong>${entry.score}</strong> · `:''}${entry.detail}</p><a class="go-link" href="${entry.target}">Go to ${destination} <span aria-hidden="true">→</span></a></div>`}
+function render(){const list=ordered(),slice=list.slice(0,visibleCount);el('feed-count').textContent=`${list.length} visible entries`;let lastDate='';el('feed-list').innerHTML=slice.map(entry=>{const heading=entry.date!==lastDate?`<p class="date-label">${prettyDate(entry.date)}</p>`:'';lastDate=entry.date;return `${heading}<button class="feed-entry ${selected===entry?'selected':''}" data-index="${entries.indexOf(entry)}" aria-expanded="${selected===entry}" aria-label="${labels[entry.type]}: ${entry.title}"><span class="entry-icon ${entry.type}">${icons[entry.type]}</span><time class="entry-time">${entry.date.replaceAll('-','/')}&nbsp; ${entry.time}</time><span class="entry-copy"><strong>${labels[entry.type]}</strong> · ${entry.title}</span><span class="entry-state ${entry.state==='Finished'?'finished':''}">${entry.state}</span></button>${preview(entry)}`}).join('')||'<p class="empty">No entries match these controls.</p>';el('older-button').hidden=visibleCount>=list.length;document.querySelectorAll('.feed-entry').forEach(button=>button.onclick=()=>{const entry=entries[button.dataset.index];selected=selected===entry?null:entry;render()});}
+document.querySelectorAll('.filter').forEach(button=>button.onclick=()=>{const type=button.dataset.type;enabled.has(type)?enabled.delete(type):enabled.add(type);button.classList.toggle('active',enabled.has(type));button.setAttribute('aria-pressed',enabled.has(type));visibleCount=7;render()});
+el('sort-button').onclick=()=>{newest=!newest;el('sort-button').innerHTML=`${newest?'Newest first':'Oldest first'} <span>⌄</span>`;render()};
+document.querySelectorAll('.density').forEach(button=>button.onclick=()=>{document.querySelectorAll('.density').forEach(b=>b.classList.remove('active'));button.classList.add('active');el('feed').classList.toggle('roomy',button.dataset.density==='comfortable')});
+el('older-button').onclick=()=>{visibleCount+=5;render()};
+el('menu-button').onclick=()=>{const menu=el('menu-panel'),open=menu.hidden;menu.hidden=!open;el('menu-button').setAttribute('aria-expanded',open)};
+render();
