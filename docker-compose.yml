@@ -1,0 +1,13 @@
+services:
+  soccer-app:
+    build: .
+    ports: ["6001:80"]
+    volumes: ["soccer-data:/app/data"]
+    restart: unless-stopped
+  soccer-collector:
+    build: .
+    command: ["node", "collector.js", "--watch"]
+    volumes: ["soccer-data:/app/data"]
+    restart: unless-stopped
+volumes:
+  soccer-data:
